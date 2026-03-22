@@ -103,6 +103,13 @@ endif()
 # add library requirements
 if(USE_SHA1 STREQUAL "openssl" OR USE_SHA256 STREQUAL "openssl" OR
    USE_SHA1 STREQUAL "openssl-fips" OR USE_SHA256 STREQUAL "openssl-fips")
+	if(NOT OPENSSL_FOUND)
+		find_package(OpenSSL REQUIRED)
+	endif()
+
+	list(APPEND LIBGIT2_SYSTEM_INCLUDES ${OPENSSL_INCLUDE_DIR})
+	list(APPEND LIBGIT2_SYSTEM_LIBS ${OPENSSL_LIBRARIES})
+
 	if(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 		list(APPEND LIBGIT2_PC_LIBS "-lssl")
 	else()
